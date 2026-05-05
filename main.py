@@ -71,5 +71,3 @@ print("Nilai V dalam dataframe: ", dataFrame['V'].head())
 
 finalRank = computeRank(dataFrame)
 print(finalRank.head())
-
-
