@@ -15,16 +15,11 @@ cost_criteria = {"Efficiency", "Acceleration"}
 criteriaLabels = [label for label, _ in criteria_map]
 criteriaColumns = [column for _, column in criteria_map]
 
-# Function
-def weightNormalization(w):
-    w = np.array(w)
-    return w / np.sum(w)
-
 def hitung_prioritas(sorted_items):
     #Perhitungan bobot berdasarkan prioritas
     items = sorted_items[0]['items']
     total_bobot = sum(range(1, len(items) + 1))
-    bobot_prioritas = {}
+    bobot_prioritas = []
 
     for idx, item in enumerate(items):
         nilai_prioritas = len(items) - idx
@@ -33,9 +28,12 @@ def hitung_prioritas(sorted_items):
         if item in cost_criteria:
             bobot *= -1
 
-        bobot_prioritas[item] = bobot
+        bobot_prioritas.append({
+            "Kriteria": item,
+            "Bobot": bobot
+        })
 
-    return bobot_prioritas
+    return pd.DataFrame(bobot_prioritas)
 
 # Hitung nilai S
 def computeSValue(dataFrame, criteriaColumns, normalizeWeight):
@@ -47,20 +45,20 @@ def computeSValue(dataFrame, criteriaColumns, normalizeWeight):
             nilai *= dataFrame.loc[i, col] ** normalizeWeight[j]
         S.append(nilai)
     
-    return S
+    return pd.DataFrame(S, columns=['S'])
 
 # Hitung Nilai V (preferensi)
 def computeVValue(dataFrame):
     total_S = dataFrame['S'].sum()
     valueV = dataFrame['S'] / total_S
-    return valueV
+    return pd.DataFrame(valueV, columns=['V'])
         
 # Perankingan
 def computeRank(dataFrame):
     dataFrame['Rank'] = dataFrame['V'].rank(ascending=False)
     dataFrameFinal = dataFrame.sort_values('V', ascending=False).reset_index(drop=True)
     
-    return dataFrameFinal
+    return pd.DataFrame(dataFrameFinal)
 
 
 def prepare_data(clean_csv='clean_ev_spec_dataset.csv'):
@@ -90,23 +88,23 @@ def prepare_data(clean_csv='clean_ev_spec_dataset.csv'):
     return dataFrame, criteriaColumns
 
 
-if __name__ == '__main__':
-    df, criteriaColumns = prepare_data()
-    print("Jumlah data setelah cleaning:", len(df))
+# if __name__ == '__main__':
+#     df, criteriaColumns = prepare_data()
+#     print("Jumlah data setelah cleaning:", len(df))
 
-    # # Normalisasi Bobot
-    # criteriaWeight = np.array([1/6] * len(criteriaColumns))
-    # normalizeWeight = weightNormalization(criteriaWeight)
-    # # mark cost criteria as negative (same indices as original script)
-    # normalizeWeight[[1, 2]] *= -1
+#     # # Normalisasi Bobot
+#     # criteriaWeight = np.array([1/6] * len(criteriaColumns))
+#     # normalizeWeight = weightNormalization(criteriaWeight)
+#     # # mark cost criteria as negative (same indices as original script)
+#     # normalizeWeight[[1, 2]] *= -1
 
-    normalizeWeight = hitung_prioritas()
+#     # normalizeWeight = hitung_prioritas()
 
-    df["S"] = computeSValue(df, criteriaColumns, normalizeWeight)
-    print("Nilai S dalam dataframe: ", df['S'].head())
+#     # df["S"] = computeSValue(df, criteriaColumns, normalizeWeight)
+#     # print("Nilai S dalam dataframe: ", df['S'].head())
 
-    df['V'] = computeVValue(df)
-    print("Nilai V dalam dataframe: ", df['V'].head())
+#     # df['V'] = computeVValue(df)
+#     # print("Nilai V dalam dataframe: ", df['V'].head())
 
-    finalRank = computeRank(df)
-    print(finalRank.head())
+#     # finalRank = computeRank(df)
+#     # print(finalRank.head())
