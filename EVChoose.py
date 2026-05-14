@@ -42,16 +42,18 @@ def computeSValue(dataFrame, criteriaColumns, normalizeWeight):
     for i in range(len(dataFrame)):
         nilai = 1
         for j, col in enumerate(criteriaColumns):
-            nilai *= dataFrame.loc[i, col] ** normalizeWeight[j]
+            nilai *= dataFrame.iloc[i][col] ** normalizeWeight[j]
         S.append(nilai)
     
-    return pd.DataFrame(S, columns=['S'])
+    return pd.Series(S, name='S')
 
 # Hitung Nilai V (preferensi)
 def computeVValue(dataFrame):
     total_S = dataFrame['S'].sum()
+    if total_S == 0:
+        raise ValueError("Total nilai S tidak boleh 0")
     valueV = dataFrame['S'] / total_S
-    return pd.DataFrame(valueV, columns=['V'])
+    return pd.Series(valueV, name='V')
         
 # Perankingan
 def computeRank(dataFrame):
