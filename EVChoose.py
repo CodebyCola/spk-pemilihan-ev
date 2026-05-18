@@ -12,8 +12,8 @@ criteria_map = [
 ]
 
 cost_criteria = {"Efficiency", "Acceleration"}
-criteriaLabels = [label for label, _ in criteria_map]
-criteriaColumns = [column for _, column in criteria_map]
+criteriaLabels = [label for label, _ in criteria_map] #ambil criteria_map [(0, _)]
+criteriaColumns = [column for _, column in criteria_map] #ambil criteria_map [(_, 0)]
 
 def hitung_prioritas(sorted_items):
     #Perhitungan bobot berdasarkan prioritas
@@ -75,10 +75,11 @@ def prepare_data(clean_csv='clean_ev_spec_dataset.csv'):
         'efficiency_wh_per_km', #Cost
         'acceleration_0_100_s', #Cost
         'fast_charging_power_kw_dc', #Benefit
-        'seats', #Cost
+        'seats', #Benefit
         'cargo_volume_l' #Benefit
     ]
 
+#  Clean data
     dataNumeric = data[criteriaColumns].apply(pd.to_numeric, errors='coerce')
 
     dataCleaned = data[dataNumeric.notna().all(axis=1)].copy()

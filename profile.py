@@ -27,7 +27,7 @@ with left_col:
     developer_card(
         name="Nicolaus Narindra L",
         role="Backend Developer",
-        skills="-",
+        skills="ctrl C + ctrl V",
         image_url="https://www.w3schools.com/howto/img_avatar.png",
         bio="-"
     )
