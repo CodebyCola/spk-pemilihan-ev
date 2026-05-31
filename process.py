@@ -94,6 +94,9 @@ simple_style = """
 }
 """
 
+st.title("Pemilihan EV Terbaik")
+st.empty()
+
 # Filter brand
 df['brand'] = df['brand'].astype(str)
 brand_options = sorted(df["brand"].dropna().unique())
