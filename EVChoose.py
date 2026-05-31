@@ -14,18 +14,20 @@ criteria_map = [
 cost_criteria = {"Efficiency", "Acceleration"}
 criteriaLabels = [label for label, _ in criteria_map] #ambil criteria_map [(0, _)]
 criteriaColumns = [column for _, column in criteria_map] #ambil criteria_map [(_, 0)]
+criteriaDisplayMap = {column: label for label, column in criteria_map}
 
-def hitung_prioritas(sorted_items):
+def hitung_prioritas(sorted_items, cost_criteria_set=None):
     #Perhitungan bobot berdasarkan prioritas
     items = sorted_items[0]['items']
     total_bobot = sum(range(1, len(items) + 1))
     bobot_prioritas = []
+    active_cost_criteria = cost_criteria if cost_criteria_set is None else set(cost_criteria_set)
 
     for idx, item in enumerate(items):
         nilai_prioritas = len(items) - idx
         bobot = nilai_prioritas / total_bobot
 
-        if item in cost_criteria:
+        if item in active_cost_criteria:
             bobot *= -1
 
         bobot_prioritas.append({
@@ -89,25 +91,3 @@ def prepare_data(clean_csv='clean_ev_spec_dataset.csv'):
 
     dataFrame = dataCleaned[['brand', 'model'] + criteriaColumns].reset_index(drop=True)
     return dataFrame, criteriaColumns
-
-
-# if __name__ == '__main__':
-#     df, criteriaColumns = prepare_data()
-#     print("Jumlah data setelah cleaning:", len(df))
-
-#     # # Normalisasi Bobot
-#     # criteriaWeight = np.array([1/6] * len(criteriaColumns))
-#     # normalizeWeight = weightNormalization(criteriaWeight)
-#     # # mark cost criteria as negative (same indices as original script)
-#     # normalizeWeight[[1, 2]] *= -1
-
-#     # normalizeWeight = hitung_prioritas()
-
-#     # df["S"] = computeSValue(df, criteriaColumns, normalizeWeight)
-#     # print("Nilai S dalam dataframe: ", df['S'].head())
-
-#     # df['V'] = computeVValue(df)
-#     # print("Nilai V dalam dataframe: ", df['V'].head())
-
-#     # finalRank = computeRank(df)
-#     # print(finalRank.head())

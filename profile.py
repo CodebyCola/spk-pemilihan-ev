@@ -25,18 +25,18 @@ left_col, right_col = st.columns(2)
 
 with left_col:
     developer_card(
-        name="Nicolaus Narindra L",
+        name="Nicolaus Narindra Lianto",
         role="Backend Developer",
         skills="ctrl C + ctrl V",
         image_url="https://www.w3schools.com/howto/img_avatar.png",
-        bio="-"
+        bio="Semua deadline tak trabas asal Claude Pro"
     )
 
 with right_col:
     developer_card(
         name="Muthia Umairah",
         role="Frontend Developer",
-        skills="C++, HTML, Java",
+        skills="Deadline Solver Spek Bondowoso",
         image_url="https://www.w3schools.com/howto/img_avatar2.png",
-        bio="-"
+        bio="Minat tidur dengan tenang 24 jam tanpa beban deadline"
     )
